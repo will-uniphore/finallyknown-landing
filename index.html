@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Known</title>
-  <meta name="description" content="Finally known." />
+  <title>Known — Finally known.</title>
+  <meta name="description" content="Every AI you use starts from zero. Known changes that." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --ink: #f0ede8;
-      --ink-mid: rgba(240,237,232,0.5);
+      --ink-mid: rgba(240,237,232,0.52);
       --ink-faint: rgba(240,237,232,0.22);
-      --ink-whisper: rgba(240,237,232,0.10);
+      --ink-whisper: rgba(240,237,232,0.09);
       --void: #070706;
-      --void-lift: #0e0e0c;
+      --void-lift: #0d0d0b;
       --gold: #b89a6a;
-      --gold-glow: rgba(184,154,106,0.12);
+      --gold-soft: rgba(184,154,106,0.55);
     }
 
     html { scroll-behavior: smooth; }
@@ -32,296 +32,222 @@
       overflow-x: hidden;
     }
 
-    /* ── ATMOSPHERE ── */
-    .atmosphere {
+    /* ATMOSPHERE */
+    .atm {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    }
-    .atmosphere::before {
-      content: '';
-      position: absolute;
-      top: -20vh; left: 50%; transform: translateX(-50%);
-      width: 80vw; height: 80vh;
-      background: radial-gradient(ellipse at center,
-        rgba(184,154,106,0.055) 0%,
-        rgba(184,154,106,0.02) 40%,
-        transparent 70%);
-      filter: blur(40px);
+      background: radial-gradient(ellipse 70% 55% at 50% 0%,
+        rgba(184,154,106,0.05) 0%, transparent 65%);
     }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 28px 48px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .wordmark {
-      font-size: 16px; font-weight: 400; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--ink);
-      text-decoration: none; opacity: 0.9;
-    }
-    .nav-right {
-      display: flex; align-items: center; gap: 40px;
-    }
-    .nav-link {
-      font-size: 13px; font-weight: 300; letter-spacing: 0.06em;
-      color: var(--ink-mid); text-decoration: none;
-      transition: color 0.4s;
-    }
-    .nav-link:hover { color: var(--ink); }
-    .nav-pill {
-      font-size: 12px; font-weight: 400; letter-spacing: 0.08em;
-      color: var(--gold); border: 1px solid rgba(184,154,106,0.35);
-      padding: 8px 22px; border-radius: 100px; text-decoration: none;
-      transition: background 0.4s, border-color 0.4s;
-    }
-    .nav-pill:hover {
-      background: rgba(184,154,106,0.08);
-      border-color: rgba(184,154,106,0.6);
-    }
+    .wm { font-size: 15px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+    .nr { display: flex; align-items: center; gap: 36px; }
+    .nl { font-size: 12px; font-weight: 300; letter-spacing: 0.07em; color: var(--ink-mid); text-decoration: none; transition: color .3s; }
+    .nl:hover { color: var(--ink); }
+    .np { font-size: 12px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,154,106,0.28); padding: 9px 24px; border-radius: 100px; text-decoration: none; transition: all .3s; }
+    .np:hover { background: rgba(184,154,106,0.07); border-color: var(--gold-soft); }
 
-    /* ── HERO ── */
-    .hero {
+    /* FADE-IN ANIMATION */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* ── ACT ONE: SETUP ── */
+    .act-one {
       position: relative; z-index: 1;
       min-height: 100svh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center;
-      padding: 0 24px;
+      text-align: center; padding: 0 24px;
     }
-
-    .hero-kana {
-      font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--gold); font-weight: 300;
-      margin-bottom: 52px; opacity: 0.8;
-    }
-
-    .hero-headline {
-      font-size: clamp(52px, 9vw, 112px);
-      font-weight: 200;
-      letter-spacing: -0.04em;
-      line-height: 0.95;
-      color: var(--ink);
-      margin-bottom: 40px;
-    }
-    .hero-headline .accent {
-      font-style: italic;
-      font-weight: 200;
-      color: var(--gold);
-    }
-
-    .hero-sub {
-      font-size: clamp(16px, 1.8vw, 20px);
-      font-weight: 300;
-      color: var(--ink-mid);
-      line-height: 1.75;
-      max-width: 460px;
-      letter-spacing: 0.01em;
+    .setup-line {
+      font-size: 13px; font-weight: 300; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--ink-mid);
       margin-bottom: 56px;
     }
-
-    .hero-actions {
-      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-      justify-content: center;
+    .setup-line span { color: var(--gold); }
+    .tension {
+      font-size: clamp(20px, 3vw, 32px); font-weight: 200;
+      color: var(--ink-mid); line-height: 1.6; letter-spacing: -0.01em;
+      max-width: 600px; margin-bottom: 64px;
     }
-
-    .btn-ghost {
-      font-size: 13px; font-weight: 400; letter-spacing: 0.1em;
+    .tension strong { color: var(--ink); font-weight: 300; display: block; }
+    .reveal-headline {
+      font-size: clamp(64px, 11vw, 130px); font-weight: 200;
+      letter-spacing: -0.045em; line-height: 0.92;
+      color: var(--ink); margin-bottom: 48px;
+    }
+    .reveal-headline em { font-style: italic; color: var(--gold); }
+    .cta-row { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center; }
+    .btn-ring {
+      font-size: 12px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--gold); border: 1px solid rgba(184,154,106,0.3);
       padding: 13px 36px; border-radius: 100px; text-decoration: none;
-      transition: all 0.4s;
-      text-transform: uppercase;
+      transition: all .35s;
     }
-    .btn-ghost:hover {
-      background: rgba(184,154,106,0.08);
-      border-color: rgba(184,154,106,0.55);
+    .btn-ring:hover { background: rgba(184,154,106,0.07); border-color: var(--gold-soft); }
+    .btn-text {
+      font-size: 12px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-mid); text-decoration: none; transition: color .3s;
     }
+    .btn-text:hover { color: var(--ink); }
 
-    .btn-plain {
-      font-size: 13px; font-weight: 300; letter-spacing: 0.08em;
-      color: var(--ink-mid); text-decoration: none;
-      transition: color 0.4s; text-transform: uppercase;
+    /* pulse dot */
+    .pulse-wrap {
+      position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
-    .btn-plain:hover { color: var(--ink); }
-
-    .hero-scroll-hint {
-      position: absolute; bottom: 40px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-    }
-    .scroll-dot {
-      width: 4px; height: 4px; border-radius: 50%;
+    .pulse-dot {
+      width: 5px; height: 5px; border-radius: 50%;
       background: var(--ink-faint);
-      animation: scroll-pulse 2.4s ease-in-out infinite;
+      animation: pdot 2.6s ease-in-out infinite;
     }
-    .scroll-dot:nth-child(2) { animation-delay: 0.3s; opacity: 0.6; }
-    .scroll-dot:nth-child(3) { animation-delay: 0.6s; opacity: 0.3; }
-    @keyframes scroll-pulse {
-      0%, 100% { opacity: 0.2; transform: translateY(0); }
-      50% { opacity: 0.8; transform: translateY(4px); }
-    }
-
-    /* ── DIVIDER ── */
-    .rule {
-      width: 1px; height: 80px; background: var(--ink-whisper);
-      margin: 0 auto;
+    .pulse-dot:nth-child(2) { animation-delay: 0.26s; opacity: 0.55; }
+    .pulse-dot:nth-child(3) { animation-delay: 0.52s; opacity: 0.25; }
+    @keyframes pdot {
+      0%,100% { opacity: .2; transform: translateY(0); }
+      50% { opacity: .9; transform: translateY(5px); }
     }
 
-    /* ── STATEMENT ── */
-    .statement {
+    /* ── ACT TWO: THE DEMO ── */
+    /* This is where Jobs would say: "Let me show you what this actually does." */
+    .act-two {
       position: relative; z-index: 1;
-      padding: 140px 24px;
-      text-align: center;
+      padding: 160px 24px;
     }
-    .statement-text {
-      font-size: clamp(22px, 3.5vw, 40px);
-      font-weight: 200;
-      color: var(--ink-mid);
-      line-height: 1.65;
-      letter-spacing: -0.01em;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-    .statement-text strong {
-      color: var(--ink);
-      font-weight: 300;
+    .act-two-inner { max-width: 900px; margin: 0 auto; }
+    .act-label {
+      font-size: 11px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); opacity: 0.65; margin-bottom: 80px;
     }
 
-    /* ── MOMENTS ── */
-    .moments {
-      position: relative; z-index: 1;
-      padding: 80px 24px 140px;
+    /* Three moments as SCREENS — like product screenshots */
+    .screen-list { display: flex; flex-direction: column; gap: 0; }
+    .screen {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 0; border-top: 1px solid var(--ink-whisper);
+      padding: 64px 0; align-items: start;
     }
-    .moments-inner {
-      max-width: 860px; margin: 0 auto;
-      display: flex; flex-direction: column; gap: 1px;
+    .screen:last-child { border-bottom: 1px solid var(--ink-whisper); }
+    .screen-n {
+      font-size: 11px; font-weight: 300; letter-spacing: 0.15em;
+      color: var(--gold); text-transform: uppercase; opacity: 0.6;
+      padding-top: 5px;
     }
-    .moment-item {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 0;
-      border-top: 1px solid var(--ink-whisper);
-      padding: 52px 0;
-      transition: border-color 0.4s;
+    .screen-body {}
+    .screen-title {
+      font-size: clamp(22px, 3vw, 32px); font-weight: 200;
+      color: var(--ink); letter-spacing: -0.025em; margin-bottom: 18px; line-height: 1.1;
     }
-    .moment-item:hover { border-top-color: rgba(184,154,106,0.2); }
-    .moment-item:last-child { border-bottom: 1px solid var(--ink-whisper); }
-    .moment-n {
-      font-size: 12px; font-weight: 300; letter-spacing: 0.15em;
-      color: var(--gold); text-transform: uppercase;
-      padding-top: 4px; opacity: 0.7;
+    .screen-copy {
+      font-size: 15px; font-weight: 300; color: var(--ink-mid);
+      line-height: 1.8; max-width: 480px; margin-bottom: 36px;
     }
-    .moment-content {}
-    .moment-title {
-      font-size: clamp(20px, 2.5vw, 28px);
-      font-weight: 300; letter-spacing: -0.02em;
-      color: var(--ink); margin-bottom: 20px; line-height: 1.2;
+    /* The "product demo" — what the agent actually says */
+    .agent-says {
+      background: var(--void-lift);
+      border: 1px solid var(--ink-whisper);
+      border-left: 2px solid rgba(184,154,106,0.3);
+      border-radius: 0 10px 10px 0;
+      padding: 24px 28px;
+      max-width: 520px;
     }
-    .moment-body {
-      font-size: 15px; font-weight: 300;
-      color: var(--ink-mid); line-height: 1.8;
-      max-width: 520px; margin-bottom: 32px;
+    .agent-tag {
+      font-size: 10px; font-weight: 400; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold); opacity: 0.6;
+      margin-bottom: 12px; display: block;
     }
-    .moment-quote {
-      font-size: 13px; font-weight: 300; font-style: italic;
-      color: var(--ink-faint);
-      border-left: 1px solid rgba(184,154,106,0.25);
-      padding-left: 20px;
-      line-height: 1.85;
-      max-width: 480px;
+    .agent-text {
+      font-size: 14px; font-weight: 300; font-style: italic;
+      color: rgba(240,237,232,0.55); line-height: 1.85;
       letter-spacing: 0.01em;
-      transition: color 0.4s, border-color 0.4s;
-    }
-    .moment-item:hover .moment-quote {
-      color: rgba(240,237,232,0.4);
-      border-left-color: rgba(184,154,106,0.4);
     }
 
-    @media (max-width: 640px) {
-      .moment-item { grid-template-columns: 1fr; gap: 16px; padding: 40px 0; }
+    @media (max-width: 600px) {
+      .screen { grid-template-columns: 1fr; gap: 20px; padding: 48px 0; }
     }
 
-    /* ── STORY PANEL ── */
-    .story-panel {
+    /* ── ACT THREE: THE STORY ── */
+    /* Jobs: "And now let me tell you about a real person." */
+    .act-three {
       position: relative; z-index: 1;
       background: var(--void-lift);
       border-top: 1px solid var(--ink-whisper);
       border-bottom: 1px solid var(--ink-whisper);
-      padding: 120px 24px;
-    }
-    .story-inner { max-width: 600px; margin: 0 auto; }
-    .story-label {
-      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--gold); font-weight: 300; margin-bottom: 48px; opacity: 0.7;
-    }
-    .story-copy {
-      font-size: clamp(17px, 2vw, 22px);
-      font-weight: 200; color: var(--ink-mid);
-      line-height: 1.9; letter-spacing: 0.01em;
-    }
-    .story-copy strong { color: var(--ink); font-weight: 300; }
-    .story-copy em { color: var(--gold); font-style: normal; }
-
-    /* ── ORIGIN ── */
-    .origin {
-      position: relative; z-index: 1;
       padding: 140px 24px;
+    }
+    .story-inner { max-width: 560px; margin: 0 auto; }
+    .story-tag {
+      font-size: 11px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); opacity: 0.6; margin-bottom: 52px; display: block;
+    }
+    .story-text {
+      font-size: clamp(17px, 2vw, 22px); font-weight: 200;
+      color: var(--ink-mid); line-height: 1.95; letter-spacing: 0.01em;
+    }
+    .story-text strong { color: var(--ink); font-weight: 300; }
+    .story-text em { color: var(--gold); font-style: normal; }
+
+    /* ── ACT FOUR: THE ORIGIN ── */
+    .act-four {
+      position: relative; z-index: 1;
+      padding: 160px 24px;
       text-align: center;
       overflow: hidden;
     }
-    .origin-bg-char {
+    .bg-kanji {
       position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: clamp(200px, 40vw, 400px);
-      font-weight: 200;
-      color: var(--ink-whisper);
-      opacity: 0.06;
-      user-select: none; pointer-events: none;
-      line-height: 1;
+      transform: translate(-50%, -52%);
+      font-size: clamp(280px, 50vw, 520px); font-weight: 200;
+      color: var(--ink); opacity: 0.028;
+      user-select: none; pointer-events: none; line-height: 1;
     }
-    .origin-content {
-      position: relative; z-index: 1;
-      max-width: 540px; margin: 0 auto;
-    }
-    .origin-char-small {
-      font-size: 48px; color: var(--gold);
-      opacity: 0.45; margin-bottom: 40px; display: block;
-      font-weight: 200;
-    }
-    .origin-text {
-      font-size: 17px; font-weight: 300; color: var(--ink-mid);
-      line-height: 1.85; margin-bottom: 20px; letter-spacing: 0.01em;
-    }
-    .origin-proverb {
-      font-size: 13px; font-weight: 200; font-style: italic;
-      color: var(--ink-faint); letter-spacing: 0.05em;
-    }
+    .origin-inner { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; }
+    .kanji-sm { font-size: 44px; font-weight: 200; color: var(--gold); opacity: 0.4; display: block; margin-bottom: 44px; }
+    .origin-text { font-size: 17px; font-weight: 300; color: var(--ink-mid); line-height: 1.9; margin-bottom: 22px; }
+    .origin-qte { font-size: 13px; font-weight: 200; font-style: italic; color: var(--ink-faint); letter-spacing: 0.04em; }
 
-    /* ── CLOSE ── */
-    .close-section {
+    /* ── CLOSING DECLARATION ── */
+    /* Jobs: not a CTA, a statement of belief. */
+    .act-close {
       position: relative; z-index: 1;
-      padding: 160px 24px 200px;
+      padding: 180px 24px 220px;
       text-align: center;
     }
-    .close-headline {
-      font-size: clamp(60px, 12vw, 140px);
-      font-weight: 200; letter-spacing: -0.04em;
-      line-height: 0.92; color: var(--ink);
+    /* The setup: one question that Jobs would ask the audience */
+    .close-question {
+      font-size: clamp(13px, 1.5vw, 16px); font-weight: 300;
+      letter-spacing: 0.08em; color: var(--ink-mid);
+      line-height: 1.9; max-width: 480px; margin: 0 auto 80px;
+    }
+    .close-question strong { color: var(--ink); font-weight: 300; display: block; margin-top: 8px; }
+
+    .declaration {
+      font-size: clamp(64px, 14vw, 160px); font-weight: 200;
+      letter-spacing: -0.045em; line-height: 0.9;
+      color: var(--ink); margin-bottom: 64px;
+    }
+    .declaration em { font-style: italic; color: var(--gold); }
+
+    .close-detail {
+      font-size: 12px; font-weight: 300; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink-faint);
       margin-bottom: 52px;
     }
-    .close-headline em {
-      font-style: italic; color: var(--gold);
-    }
-    .close-sub {
-      font-size: 14px; font-weight: 300; color: var(--ink-faint);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 56px;
-    }
-    .close-actions {
-      display: flex; align-items: center; gap: 32px;
-      justify-content: center; flex-wrap: wrap;
-    }
+    .close-cta { display: flex; align-items: center; gap: 28px; justify-content: center; flex-wrap: wrap; }
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       position: relative; z-index: 1;
       border-top: 1px solid var(--ink-whisper);
@@ -329,150 +255,172 @@
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 16px;
     }
-    .footer-mark {
-      font-size: 13px; font-weight: 300; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--ink-faint);
-    }
-    .footer-links { display: flex; gap: 32px; }
-    .footer-links a {
-      font-size: 12px; font-weight: 300; letter-spacing: 0.08em;
-      color: var(--ink-faint); text-decoration: none;
-      transition: color 0.4s;
-    }
-    .footer-links a:hover { color: var(--ink-mid); }
+    .fm { font-size: 12px; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
+    .fl { display: flex; gap: 32px; }
+    .fl a { font-size: 12px; font-weight: 300; letter-spacing: 0.07em; color: var(--ink-faint); text-decoration: none; transition: color .3s; }
+    .fl a:hover { color: var(--ink-mid); }
   </style>
 </head>
 <body>
 
-<div class="atmosphere"></div>
+<div class="atm"></div>
 
 <!-- NAV -->
 <nav>
-  <a href="/" class="wordmark">Known</a>
-  <div class="nav-right">
-    <a href="#moments" class="nav-link">Product</a>
-    <a href="https://github.com/will-uniphore/finallyknown" target="_blank" class="nav-link">GitHub</a>
-    <a href="#start" class="nav-pill">Get started</a>
+  <a href="/" class="wm">Known</a>
+  <div class="nr">
+    <a href="#demo" class="nl">Product</a>
+    <a href="https://github.com/will-uniphore/finallyknown" target="_blank" class="nl">GitHub</a>
+    <a href="#close" class="np">Get started</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <p class="hero-kana">知己 &nbsp;·&nbsp; zhī jǐ</p>
+<!-- ── ACT ONE: SETUP ── -->
+<section class="act-one">
 
-  <h1 class="hero-headline">
-    Finally<br><span class="accent">known.</span>
+  <!-- The setup Jobs would use: name the enemy first -->
+  <p class="setup-line reveal">Every AI you use &nbsp;<span>starts from zero.</span></p>
+
+  <p class="tension reveal reveal-delay-1">
+    It doesn't know your name.<br>
+    Your work. Your patterns. Your goals.<br>
+    <strong>Every conversation, a stranger.</strong>
+  </p>
+
+  <!-- The reveal -->
+  <h1 class="reveal-headline reveal reveal-delay-2">
+    Finally<br><em>known.</em>
   </h1>
 
-  <p class="hero-sub">
-    Every AI you use starts from zero.<br>
-    Known changes that — permanently.
-  </p>
-
-  <div class="hero-actions">
-    <a href="https://github.com/will-uniphore/finallyknown" class="btn-ghost">Get started free</a>
-    <a href="#moments" class="btn-plain">See how it works ↓</a>
+  <div class="cta-row reveal reveal-delay-3">
+    <a href="https://github.com/will-uniphore/finallyknown" class="btn-ring">Get started free</a>
+    <a href="#demo" class="btn-text">See what changes ↓</a>
   </div>
 
-  <div class="hero-scroll-hint">
-    <div class="scroll-dot"></div>
-    <div class="scroll-dot"></div>
-    <div class="scroll-dot"></div>
+  <div class="pulse-wrap">
+    <div class="pulse-dot"></div>
+    <div class="pulse-dot"></div>
+    <div class="pulse-dot"></div>
   </div>
 </section>
 
-<!-- STATEMENT -->
-<div class="rule"></div>
-<section class="statement">
-  <p class="statement-text">
-    You explain yourself endlessly.<br>
-    Your preferences. Your context. Your history.<br>
-    Every new tool, a <strong>stranger</strong>.<br>
-    Every conversation, from <strong>zero</strong>.
-  </p>
-</section>
-<div class="rule"></div>
+<!-- ── ACT TWO: THE DEMO ── -->
+<section class="act-two" id="demo">
+  <div class="act-two-inner">
+    <p class="act-label reveal">What this actually does</p>
 
-<!-- THREE MOMENTS -->
-<section class="moments" id="moments">
-  <div class="moments-inner">
+    <div class="screen-list">
 
-    <div class="moment-item">
-      <span class="moment-n">01</span>
-      <div class="moment-content">
-        <h2 class="moment-title">The Mirror</h2>
-        <p class="moment-body">Your agent sees a pattern you haven't articulated to yourself. It surfaces it when you need to hear it — not when you ask.</p>
-        <p class="moment-quote">"You've been avoiding the financial conversation with your partner for 47 days. Based on your pattern, you delay big decisions when work stress is high. Stress is high right now. This one has a time component — rates are moving."</p>
+      <div class="screen reveal">
+        <span class="screen-n">01</span>
+        <div class="screen-body">
+          <h2 class="screen-title">The Mirror</h2>
+          <p class="screen-copy">Your agent sees a pattern you haven't articulated to yourself. It surfaces it when you need to hear it — not when you ask.</p>
+          <div class="agent-says">
+            <span class="agent-tag">Your agent says</span>
+            <p class="agent-text">"You've been avoiding the financial conversation with your partner for 47 days. Based on your pattern, you delay big decisions when work stress is high. Stress is high right now. But this one has a time component — rates are moving."</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="moment-item">
-      <span class="moment-n">02</span>
-      <div class="moment-content">
-        <h2 class="moment-title">The Surprise</h2>
-        <p class="moment-body">You open a new AI tool for the first time. Before you say a word, it already knows you. No setup. No explaining yourself.</p>
-        <p class="moment-quote">"I see you've been deep in this codebase for 3 weeks. Your pattern says you're in the zone — I'll keep interruptions minimal. I know you context-switch between two projects, so I'll remember where we paused."</p>
+      <div class="screen reveal">
+        <span class="screen-n">02</span>
+        <div class="screen-body">
+          <h2 class="screen-title">The Surprise</h2>
+          <p class="screen-copy">You open a new AI tool. First interaction ever. Before you say a word — it already knows you.</p>
+          <div class="agent-says">
+            <span class="agent-tag">New agent, first message</span>
+            <p class="agent-text">"I see you've been deep in this codebase for 3 weeks. Your pattern says you're in the zone — I'll keep interruptions minimal. I know you context-switch between two projects, so I'll remember where we paused."</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="moment-item">
-      <span class="moment-n">03</span>
-      <div class="moment-content">
-        <h2 class="moment-title">The Protection</h2>
-        <p class="moment-body">Known notices when you're about to repeat a pattern that hasn't served you. Your agent intervenes — not by blocking you, but by telling you the truth.</p>
-        <p class="moment-quote">"You've expressed enthusiasm about starting this new project. Historical pattern: 4 significant side projects in 3 months. Completion rate with more than 3 active: 25%. Consider sequencing rather than parallelizing."</p>
+      <div class="screen reveal">
+        <span class="screen-n">03</span>
+        <div class="screen-body">
+          <h2 class="screen-title">The Protection</h2>
+          <p class="screen-copy">Known notices when you're about to repeat a pattern that hasn't served you. It tells you the truth.</p>
+          <div class="agent-says">
+            <span class="agent-tag">Your agent intervenes</span>
+            <p class="agent-text">"You've expressed enthusiasm about starting this new project. Historical pattern: 4 significant side projects in 3 months. Completion rate with more than 3 active: 25%. Consider sequencing rather than parallelizing."</p>
+          </div>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
 
-<!-- STORY -->
-<section class="story-panel">
+<!-- ── ACT THREE: THE STORY ── -->
+<section class="act-three">
   <div class="story-inner">
-    <p class="story-label">A story</p>
-    <p class="story-copy">
-      Will had been using AI agents for two years. They were helpful. But they treated him like a stranger every time.<br><br>
+    <span class="story-tag reveal">A real story</span>
+    <p class="story-text reveal">
+      Will had been using AI agents for two years.<br>
+      They were helpful. But they treated him like a stranger every time.<br><br>
       Then he turned on Known.<br><br>
       Three weeks later, his agent noticed a pattern Will had never seen. He was <strong>systematically avoiding the one conversation that could change his career</strong>. Not because he was afraid — because every time he built up to it, a new project distracted him.<br><br>
-      His agent said: <em>"You've done this four times. The conversation with your CEO is the highest-leverage thing you can do this quarter. Everything else is displacement activity."</em><br><br>
+      His agent said:<br><br>
+      <em>"You've done this four times. The conversation with your CEO is the highest-leverage thing you can do this quarter. Everything else is displacement activity."</em><br><br>
       <strong>Will had the conversation the next day.</strong>
     </p>
   </div>
 </section>
 
-<!-- ORIGIN -->
-<section class="origin">
-  <div class="origin-bg-char">知己</div>
-  <div class="origin-content">
-    <span class="origin-char-small">知己</span>
-    <p class="origin-text">
-      Known comes from the Chinese concept of 知己 — the person who truly knows you. Not a friend. Not a partner. Someone who understands you so deeply they can finish your thoughts.
-    </p>
-    <p class="origin-proverb">"人生得一知己足矣" &mdash; In life, having one zhiji is enough.</p>
+<!-- ── ACT FOUR: THE ORIGIN ── -->
+<section class="act-four">
+  <div class="bg-kanji" aria-hidden="true">知己</div>
+  <div class="origin-inner">
+    <span class="kanji-sm reveal">知己</span>
+    <p class="origin-text reveal">Known comes from the Chinese concept of <em style="color:var(--gold);font-style:normal">知己</em> — the person who truly knows you. Not a friend. Not a partner. Someone who understands you so deeply they can finish your thoughts.</p>
+    <p class="origin-qte reveal">"人生得一知己足矣" &mdash; In life, having one zhiji is enough.</p>
   </div>
 </section>
 
-<!-- CLOSE -->
-<section class="close-section" id="start">
-  <h2 class="close-headline">
+<!-- ── CLOSING DECLARATION ── -->
+<!-- Jobs would end with a statement of belief, not a sales pitch -->
+<section class="act-close" id="close">
+
+  <p class="close-question reveal">
+    The most powerful technology in human history<br>
+    treats you like a stranger. Every. Single. Time.<br>
+    <strong>We think that's broken.</strong>
+  </p>
+
+  <h2 class="declaration reveal">
     Finally<br><em>known.</em>
   </h2>
-  <p class="close-sub">Open source &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; Your data stays local</p>
-  <div class="close-actions">
-    <a href="https://github.com/will-uniphore/finallyknown" class="btn-ghost">View on GitHub →</a>
-    <a href="https://github.com/will-uniphore/finallyknown#readme" class="btn-plain">Read the docs</a>
+
+  <p class="close-detail reveal">Open source &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; Your data stays local</p>
+
+  <div class="close-cta reveal">
+    <a href="https://github.com/will-uniphore/finallyknown" class="btn-ring">View on GitHub →</a>
+    <a href="https://github.com/will-uniphore/finallyknown#readme" class="btn-text">Read the docs</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-mark">Known &nbsp;·&nbsp; finallyknown.ai</span>
-  <div class="footer-links">
+  <span class="fm">Known &nbsp;·&nbsp; finallyknown.ai</span>
+  <div class="fl">
     <a href="https://github.com/will-uniphore/finallyknown" target="_blank">GitHub</a>
     <a href="https://finallyknown.ai">finallyknown.ai</a>
   </div>
 </footer>
+
+<script>
+  // Scroll-reveal — every element enters with purpose
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
