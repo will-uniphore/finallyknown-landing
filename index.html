@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Known — Finally known.</title>
-  <meta name="description" content="Every AI you use starts from zero. Known changes that." />
+  <title>Known — Memory that works.</title>
+  <meta name="description" content="OpenClaw's memory is broken by default. Known fixes it — automatically, permanently, for free." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --ink: #f0ede8;
       --ink-mid: rgba(240,237,232,0.52);
@@ -20,26 +19,20 @@
       --void-lift: #0d0d0b;
       --gold: #b89a6a;
       --gold-soft: rgba(184,154,106,0.55);
+      --red-dim: rgba(220,80,80,0.7);
+      --green-dim: rgba(80,180,100,0.7);
     }
-
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--void);
-      color: var(--ink);
+      background: var(--void); color: var(--ink);
       font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
     }
-
-    /* ATMOSPHERE */
     .atm {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background: radial-gradient(ellipse 70% 55% at 50% 0%,
         rgba(184,154,106,0.05) 0%, transparent 65%);
     }
-
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 28px 48px;
@@ -52,49 +45,41 @@
     .np { font-size: 12px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,154,106,0.28); padding: 9px 24px; border-radius: 100px; text-decoration: none; transition: all .3s; }
     .np:hover { background: rgba(184,154,106,0.07); border-color: var(--gold-soft); }
 
-    /* FADE-IN ANIMATION */
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.15s; }
     .reveal-delay-2 { transition-delay: 0.3s; }
     .reveal-delay-3 { transition-delay: 0.45s; }
 
-    /* ── ACT ONE: SETUP ── */
-    .act-one {
+    /* HERO — the problem, plain */
+    .hero {
       position: relative; z-index: 1;
       min-height: 100svh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center; padding: 0 24px;
     }
-    .setup-line {
-      font-size: 13px; font-weight: 300; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--ink-mid);
-      margin-bottom: 56px;
+    .hero-badge {
+      font-size: 11px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid rgba(184,154,106,0.25);
+      padding: 6px 18px; border-radius: 100px; display: inline-block;
+      margin-bottom: 40px; opacity: 0.8;
     }
-    .setup-line span { color: var(--gold); }
-    .tension {
-      font-size: clamp(20px, 3vw, 32px); font-weight: 200;
-      color: var(--ink-mid); line-height: 1.6; letter-spacing: -0.01em;
-      max-width: 600px; margin-bottom: 64px;
+    .hero-headline {
+      font-size: clamp(48px, 9vw, 108px); font-weight: 200;
+      letter-spacing: -0.04em; line-height: 0.95;
+      color: var(--ink); margin-bottom: 32px;
     }
-    .tension strong { color: var(--ink); font-weight: 300; display: block; }
-    .reveal-headline {
-      font-size: clamp(64px, 11vw, 130px); font-weight: 200;
-      letter-spacing: -0.045em; line-height: 0.92;
-      color: var(--ink); margin-bottom: 48px;
+    .hero-headline em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(15px, 1.8vw, 19px); font-weight: 300;
+      color: var(--ink-mid); line-height: 1.75; max-width: 480px; margin-bottom: 52px;
     }
-    .reveal-headline em { font-style: italic; color: var(--gold); }
-    .cta-row { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center; }
+    .hero-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: center; }
     .btn-ring {
       font-size: 12px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--gold); border: 1px solid rgba(184,154,106,0.3);
-      padding: 13px 36px; border-radius: 100px; text-decoration: none;
-      transition: all .35s;
+      padding: 13px 36px; border-radius: 100px; text-decoration: none; transition: all .35s;
     }
     .btn-ring:hover { background: rgba(184,154,106,0.07); border-color: var(--gold-soft); }
     .btn-text {
@@ -102,159 +87,106 @@
       color: var(--ink-mid); text-decoration: none; transition: color .3s;
     }
     .btn-text:hover { color: var(--ink); }
-
-    /* pulse dot */
-    .pulse-wrap {
-      position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-    }
-    .pulse-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--ink-faint);
-      animation: pdot 2.6s ease-in-out infinite;
-    }
+    .pulse-wrap { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .pulse-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-faint); animation: pdot 2.6s ease-in-out infinite; }
     .pulse-dot:nth-child(2) { animation-delay: 0.26s; opacity: 0.55; }
     .pulse-dot:nth-child(3) { animation-delay: 0.52s; opacity: 0.25; }
-    @keyframes pdot {
-      0%,100% { opacity: .2; transform: translateY(0); }
-      50% { opacity: .9; transform: translateY(5px); }
-    }
+    @keyframes pdot { 0%,100% { opacity: .2; transform: translateY(0); } 50% { opacity: .9; transform: translateY(5px); } }
 
-    /* ── ACT TWO: THE DEMO ── */
-    /* This is where Jobs would say: "Let me show you what this actually does." */
-    .act-two {
-      position: relative; z-index: 1;
-      padding: 160px 24px;
-    }
-    .act-two-inner { max-width: 900px; margin: 0 auto; }
-    .act-label {
+    /* THREE PAINS */
+    .pains { position: relative; z-index: 1; padding: 120px 24px; }
+    .pains-inner { max-width: 860px; margin: 0 auto; }
+    .section-tag {
       font-size: 11px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--gold); opacity: 0.65; margin-bottom: 80px;
+      color: var(--gold); opacity: 0.65; margin-bottom: 64px; display: block;
     }
+    .pain-list { display: flex; flex-direction: column; gap: 1px; }
+    .pain {
+      display: grid; grid-template-columns: 72px 1fr;
+      border-top: 1px solid var(--ink-whisper);
+      padding: 52px 0; align-items: start;
+      transition: border-color 0.4s;
+    }
+    .pain:last-child { border-bottom: 1px solid var(--ink-whisper); }
+    .pain:hover { border-top-color: rgba(220,80,80,0.2); }
+    .pain-n { font-size: 11px; font-weight: 300; letter-spacing: 0.15em; color: var(--red-dim); text-transform: uppercase; padding-top: 5px; opacity: 0.8; }
+    .pain-title { font-size: clamp(20px, 2.5vw, 28px); font-weight: 300; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.2; }
+    .pain-body { font-size: 15px; font-weight: 300; color: var(--ink-mid); line-height: 1.8; max-width: 520px; margin-bottom: 20px; }
+    .pain-voice {
+      font-size: 13px; font-weight: 300; font-style: italic;
+      color: var(--ink-faint); border-left: 1px solid rgba(220,80,80,0.25);
+      padding-left: 18px; line-height: 1.85; max-width: 480px;
+    }
+    @media (max-width: 600px) { .pain { grid-template-columns: 1fr; gap: 16px; padding: 40px 0; } }
 
-    /* Three moments as SCREENS — like product screenshots */
-    .screen-list { display: flex; flex-direction: column; gap: 0; }
-    .screen {
-      display: grid; grid-template-columns: 80px 1fr;
-      gap: 0; border-top: 1px solid var(--ink-whisper);
-      padding: 64px 0; align-items: start;
-    }
-    .screen:last-child { border-bottom: 1px solid var(--ink-whisper); }
-    .screen-n {
-      font-size: 11px; font-weight: 300; letter-spacing: 0.15em;
-      color: var(--gold); text-transform: uppercase; opacity: 0.6;
-      padding-top: 5px;
-    }
-    .screen-body {}
-    .screen-title {
-      font-size: clamp(22px, 3vw, 32px); font-weight: 200;
-      color: var(--ink); letter-spacing: -0.025em; margin-bottom: 18px; line-height: 1.1;
-    }
-    .screen-copy {
-      font-size: 15px; font-weight: 300; color: var(--ink-mid);
-      line-height: 1.8; max-width: 480px; margin-bottom: 36px;
-    }
-    /* The "product demo" — what the agent actually says */
-    .agent-says {
-      background: var(--void-lift);
-      border: 1px solid var(--ink-whisper);
-      border-left: 2px solid rgba(184,154,106,0.3);
-      border-radius: 0 10px 10px 0;
-      padding: 24px 28px;
-      max-width: 520px;
-    }
-    .agent-tag {
-      font-size: 10px; font-weight: 400; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--gold); opacity: 0.6;
-      margin-bottom: 12px; display: block;
-    }
-    .agent-text {
-      font-size: 14px; font-weight: 300; font-style: italic;
-      color: rgba(240,237,232,0.55); line-height: 1.85;
-      letter-spacing: 0.01em;
-    }
-
-    @media (max-width: 600px) {
-      .screen { grid-template-columns: 1fr; gap: 20px; padding: 48px 0; }
-    }
-
-    /* ── ACT THREE: THE STORY ── */
-    /* Jobs: "And now let me tell you about a real person." */
-    .act-three {
+    /* THE FIX */
+    .fix-section {
       position: relative; z-index: 1;
       background: var(--void-lift);
       border-top: 1px solid var(--ink-whisper);
       border-bottom: 1px solid var(--ink-whisper);
-      padding: 140px 24px;
+      padding: 120px 24px;
+    }
+    .fix-inner { max-width: 860px; margin: 0 auto; }
+    .fix-list { display: flex; flex-direction: column; gap: 1px; margin-top: 64px; }
+    .fix-item {
+      display: grid; grid-template-columns: 72px 1fr;
+      border-top: 1px solid var(--ink-whisper);
+      padding: 48px 0; align-items: start;
+      transition: border-color 0.4s;
+    }
+    .fix-item:last-child { border-bottom: 1px solid var(--ink-whisper); }
+    .fix-item:hover { border-top-color: rgba(80,180,100,0.2); }
+    .fix-n { font-size: 11px; font-weight: 300; letter-spacing: 0.15em; color: var(--green-dim); text-transform: uppercase; padding-top: 5px; opacity: 0.8; }
+    .fix-title { font-size: clamp(20px, 2.5vw, 28px); font-weight: 300; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 16px; }
+    .fix-body { font-size: 15px; font-weight: 300; color: var(--ink-mid); line-height: 1.8; max-width: 520px; margin-bottom: 24px; }
+    .fix-demo {
+      background: var(--void); border: 1px solid var(--ink-whisper);
+      border-left: 2px solid rgba(80,180,100,0.3);
+      border-radius: 0 8px 8px 0; padding: 20px 24px; max-width: 520px;
+    }
+    .fix-demo-tag { font-size: 10px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-dim); opacity: 0.7; margin-bottom: 10px; display: block; }
+    .fix-demo-text { font-size: 13px; font-weight: 300; color: rgba(240,237,232,0.5); line-height: 1.8; font-style: italic; }
+    @media (max-width: 600px) { .fix-item { grid-template-columns: 1fr; gap: 16px; padding: 40px 0; } }
+
+    /* HOW */
+    .how-section { position: relative; z-index: 1; padding: 120px 24px; }
+    .how-inner { max-width: 860px; margin: 0 auto; }
+    .how-steps { margin-top: 64px; display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; }
+    @media (max-width: 640px) { .how-steps { grid-template-columns: 1fr; gap: 40px; } }
+    .how-step-n { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 300; opacity: 0.65; margin-bottom: 16px; display: block; }
+    .how-step-title { font-size: 17px; font-weight: 300; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 12px; }
+    .how-step-body { font-size: 14px; font-weight: 300; color: var(--ink-mid); line-height: 1.75; }
+
+    /* STORY */
+    .story-section {
+      position: relative; z-index: 1;
+      background: var(--void-lift);
+      border-top: 1px solid var(--ink-whisper);
+      border-bottom: 1px solid var(--ink-whisper);
+      padding: 120px 24px;
     }
     .story-inner { max-width: 560px; margin: 0 auto; }
-    .story-tag {
-      font-size: 11px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--gold); opacity: 0.6; margin-bottom: 52px; display: block;
-    }
-    .story-text {
-      font-size: clamp(17px, 2vw, 22px); font-weight: 200;
-      color: var(--ink-mid); line-height: 1.95; letter-spacing: 0.01em;
-    }
+    .story-text { font-size: clamp(17px, 2vw, 22px); font-weight: 200; color: var(--ink-mid); line-height: 1.9; letter-spacing: 0.01em; }
     .story-text strong { color: var(--ink); font-weight: 300; }
     .story-text em { color: var(--gold); font-style: normal; }
 
-    /* ── ACT FOUR: THE ORIGIN ── */
-    .act-four {
-      position: relative; z-index: 1;
-      padding: 160px 24px;
-      text-align: center;
-      overflow: hidden;
-    }
-    .bg-kanji {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -52%);
-      font-size: clamp(280px, 50vw, 520px); font-weight: 200;
-      color: var(--ink); opacity: 0.028;
-      user-select: none; pointer-events: none; line-height: 1;
-    }
+    /* ORIGIN */
+    .origin-section { position: relative; z-index: 1; padding: 140px 24px; text-align: center; overflow: hidden; }
+    .bg-kanji { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); font-size: clamp(280px, 50vw, 520px); font-weight: 200; color: var(--ink); opacity: 0.025; user-select: none; pointer-events: none; line-height: 1; }
     .origin-inner { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; }
-    .kanji-sm { font-size: 44px; font-weight: 200; color: var(--gold); opacity: 0.4; display: block; margin-bottom: 44px; }
-    .origin-text { font-size: 17px; font-weight: 300; color: var(--ink-mid); line-height: 1.9; margin-bottom: 22px; }
-    .origin-qte { font-size: 13px; font-weight: 200; font-style: italic; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .kanji-sm { font-size: 44px; font-weight: 200; color: var(--gold); opacity: 0.4; display: block; margin-bottom: 40px; }
+    .origin-text { font-size: 17px; font-weight: 300; color: var(--ink-mid); line-height: 1.9; margin-bottom: 20px; }
+    .origin-qte { font-size: 13px; font-weight: 200; font-style: italic; color: var(--ink-faint); }
 
-    /* ── CLOSING DECLARATION ── */
-    /* Jobs: not a CTA, a statement of belief. */
-    .act-close {
-      position: relative; z-index: 1;
-      padding: 180px 24px 220px;
-      text-align: center;
-    }
-    /* The setup: one question that Jobs would ask the audience */
-    .close-question {
-      font-size: clamp(13px, 1.5vw, 16px); font-weight: 300;
-      letter-spacing: 0.08em; color: var(--ink-mid);
-      line-height: 1.9; max-width: 480px; margin: 0 auto 80px;
-    }
-    .close-question strong { color: var(--ink); font-weight: 300; display: block; margin-top: 8px; }
-
-    .declaration {
-      font-size: clamp(64px, 14vw, 160px); font-weight: 200;
-      letter-spacing: -0.045em; line-height: 0.9;
-      color: var(--ink); margin-bottom: 64px;
-    }
-    .declaration em { font-style: italic; color: var(--gold); }
-
-    .close-detail {
-      font-size: 12px; font-weight: 300; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--ink-faint);
-      margin-bottom: 52px;
-    }
+    /* CLOSE */
+    .close-section { position: relative; z-index: 1; padding: 160px 24px 200px; text-align: center; }
+    .close-headline { font-size: clamp(56px, 12vw, 140px); font-weight: 200; letter-spacing: -0.045em; line-height: 0.9; color: var(--ink); margin-bottom: 48px; }
+    .close-headline em { font-style: italic; color: var(--gold); }
+    .close-sub { font-size: 13px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 52px; }
     .close-cta { display: flex; align-items: center; gap: 28px; justify-content: center; flex-wrap: wrap; }
 
-    /* FOOTER */
-    footer {
-      position: relative; z-index: 1;
-      border-top: 1px solid var(--ink-whisper);
-      padding: 36px 48px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 16px;
-    }
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--ink-whisper); padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
     .fm { font-size: 12px; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
     .fl { display: flex; gap: 32px; }
     .fl a { font-size: 12px; font-weight: 300; letter-spacing: 0.07em; color: var(--ink-faint); text-decoration: none; transition: color .3s; }
@@ -265,36 +197,31 @@
 
 <div class="atm"></div>
 
-<!-- NAV -->
 <nav>
   <a href="/" class="wm">Known</a>
   <div class="nr">
-    <a href="#demo" class="nl">Product</a>
+    <a href="#fix" class="nl">How it works</a>
     <a href="https://github.com/will-uniphore/finallyknown" target="_blank" class="nl">GitHub</a>
-    <a href="#close" class="np">Get started</a>
+    <a href="#start" class="np">Get started</a>
   </div>
 </nav>
 
-<!-- ── ACT ONE: SETUP ── -->
-<section class="act-one">
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-badge reveal">For OpenClaw users</span>
 
-  <!-- The setup Jobs would use: name the enemy first -->
-  <p class="setup-line reveal">Every AI you use &nbsp;<span>starts from zero.</span></p>
-
-  <p class="tension reveal reveal-delay-1">
-    It doesn't know your name.<br>
-    Your work. Your patterns. Your goals.<br>
-    <strong>Every conversation, a stranger.</strong>
-  </p>
-
-  <!-- The reveal -->
-  <h1 class="reveal-headline reveal reveal-delay-2">
-    Finally<br><em>known.</em>
+  <h1 class="hero-headline reveal reveal-delay-1">
+    Memory that<br><em>actually works.</em>
   </h1>
 
-  <div class="cta-row reveal reveal-delay-3">
-    <a href="https://github.com/will-uniphore/finallyknown" class="btn-ring">Get started free</a>
-    <a href="#demo" class="btn-text">See what changes ↓</a>
+  <p class="hero-sub reveal reveal-delay-2">
+    MEMORY.md overflows. Sessions forget everything. Every prompt burns tokens loading stale context.<br><br>
+    Known fixes all three — automatically.
+  </p>
+
+  <div class="hero-actions reveal reveal-delay-3">
+    <a href="https://github.com/will-uniphore/finallyknown" class="btn-ring">Install free →</a>
+    <a href="#pain" class="btn-text">See the problem ↓</a>
   </div>
 
   <div class="pulse-wrap">
@@ -304,57 +231,84 @@
   </div>
 </section>
 
-<!-- ── ACT TWO: THE DEMO ── -->
-<section class="act-two" id="demo">
-  <div class="act-two-inner">
-    <p class="act-label reveal">What this actually does</p>
+<!-- THE THREE PAINS -->
+<section class="pains" id="pain">
+  <div class="pains-inner">
+    <span class="section-tag reveal">The problem — verbatim from your Discord</span>
 
-    <div class="screen-list">
+    <div class="pain-list">
 
-      <div class="screen reveal">
-        <span class="screen-n">01</span>
-        <div class="screen-body">
-          <h2 class="screen-title">The Initiation</h2>
-          <p class="screen-copy">When Known is confident in a pattern — confident enough — your agent opens a conversation you didn't start. Not a notification. A moment.</p>
-          <div class="agent-says">
-            <span class="agent-tag">Your agent, out of nowhere</span>
-            <p class="agent-text">"I've been watching how you work for six weeks. I noticed something I think you should know. You've started a new project four times this month. Each time, it happened the week before a major career conversation you said you were going to have. You didn't have any of those conversations."</p>
+      <div class="pain reveal">
+        <span class="pain-n">Pain 01</span>
+        <div>
+          <h2 class="pain-title">MEMORY.md overflows within a week</h2>
+          <p class="pain-body">You write things down. It grows. Within days it's too big to load efficiently, half of it is stale, and the agent has no structured way to know what's in it. You end up manually pruning it — or ignoring it entirely.</p>
+          <p class="pain-voice">"Overflows within a week of heavy usage. Requires constant manual pruning and the agent has no structured way to know what's in it." — GitHub #51612, filed yesterday</p>
+        </div>
+      </div>
+
+      <div class="pain reveal">
+        <span class="pain-n">Pain 02</span>
+        <div>
+          <h2 class="pain-title">Sessions reset. Everything is forgotten.</h2>
+          <p class="pain-body">After 60 minutes of idle, you're a stranger again. Everything you taught the agent — preferences, context, what you're working on — gone. Unless you told it to write it down. Which you forgot to do.</p>
+          <p class="pain-voice">"This is taking more than 2 days now to set up because you are also forgetting memory and I'm running in loops." — OpenClaw Discord, #help</p>
+        </div>
+      </div>
+
+      <div class="pain reveal">
+        <span class="pain-n">Pain 03</span>
+        <div>
+          <h2 class="pain-title">Every prompt burns tokens loading stale context</h2>
+          <p class="pain-body">The default fix is dumping your entire memory file into every prompt. That's 6K+ tokens of stale context loaded on every single message — slow, expensive, and the agent still gets confused by contradictions in old data.</p>
+          <p class="pain-voice">"The fixed cost overhead of all the SOUL, MEMORY etc is pretty big." — OpenClaw Discord, #general, today</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- THE FIX -->
+<section class="fix-section" id="fix">
+  <div class="fix-inner">
+    <span class="section-tag reveal">How Known fixes it</span>
+    <h2 style="font-size: clamp(28px,4vw,44px); font-weight:200; letter-spacing:-0.02em; color:var(--ink); line-height:1.2;" class="reveal">Three problems.<br>One install.</h2>
+
+    <div class="fix-list">
+
+      <div class="fix-item reveal">
+        <span class="fix-n">Fix 01</span>
+        <div>
+          <h3 class="fix-title">Automatic extraction — no more manual writing</h3>
+          <p class="fix-body">Known watches every conversation and automatically extracts what matters — preferences, patterns, goals, relationships — into a knowledge graph. No "write this to MEMORY.md." It just happens.</p>
+          <div class="fix-demo">
+            <span class="fix-demo-tag">What Known extracts silently</span>
+            <p class="fix-demo-text">"Prefers TypeScript. Avoids confrontation when stressed. Building 3 products simultaneously — completion rate drops below 25% when more than 3 active. Best work 9–11pm. Currently targeting 75kg."</p>
           </div>
         </div>
       </div>
 
-      <div class="screen reveal">
-        <span class="screen-n">02</span>
-        <div class="screen-body">
-          <h2 class="screen-title">The Mirror</h2>
-          <p class="screen-copy">In every conversation, your agent already knows you — not from what you said today, but from weeks of watching across every tool you use.</p>
-          <div class="agent-says">
-            <span class="agent-tag">Your agent, already knowing</span>
-            <p class="agent-text">"Based on your pattern with Umesh, lead with the Konecta win — he responds to momentum. Keep it under 200 words, he skims. Frame it as 'here's what this enables' not 'here's what I need.' Want me to draft it?"</p>
+      <div class="fix-item reveal">
+        <span class="fix-n">Fix 02</span>
+        <div>
+          <h3 class="fix-title">Persistent across sessions — forever</h3>
+          <p class="fix-body">Known stores your understanding in a local database that never resets. Session expire? New session starts? Doesn't matter. The knowledge graph persists independently of the context window. You're never a stranger to your own agent again.</p>
+          <div class="fix-demo">
+            <span class="fix-demo-tag">New session, agent opening message</span>
+            <p class="fix-demo-text">"I see you've been deep in this codebase for 3 weeks across your last 12 sessions. Your pattern says you're in the zone — I'll keep interruptions minimal and only flag blockers."</p>
           </div>
         </div>
       </div>
 
-      <div class="screen reveal">
-        <span class="screen-n">03</span>
-        <div class="screen-body">
-          <h2 class="screen-title">The Surprise</h2>
-          <p class="screen-copy">You open a new AI tool for the first time. Before you say a word, it already knows what matters — drawn from every tool you've ever used.</p>
-          <div class="agent-says">
-            <span class="agent-tag">New tool, first message</span>
-            <p class="agent-text">"I see you've been deep in this codebase for 3 weeks across Cursor and Claude. Your pattern says you're in the zone — I'll keep interruptions minimal. I know you context-switch between two projects, so I'll remember where we paused."</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="screen reveal">
-        <span class="screen-n">04</span>
-        <div class="screen-body">
-          <h2 class="screen-title">The Protection</h2>
-          <p class="screen-copy">Known notices when you're about to repeat a pattern that hasn't served you. Not blocking you. Telling you the truth.</p>
-          <div class="agent-says">
-            <span class="agent-tag">Your agent intervenes</span>
-            <p class="agent-text">"You just said you're excited about this new project. Historical pattern: 4 significant side projects in 3 months. Completion rate when more than 3 active: 25%. I'm not saying don't do it. I'm saying: sequence rather than parallelize."</p>
+      <div class="fix-item reveal">
+        <span class="fix-n">Fix 03</span>
+        <div>
+          <h3 class="fix-title">Semantic injection — only what's relevant</h3>
+          <p class="fix-body">Instead of dumping 6K tokens into every prompt, Known injects only what's semantically relevant to your current question. 95% less context overhead. Your agent runs faster, costs less, and actually understands what you're asking.</p>
+          <div class="fix-demo">
+            <span class="fix-demo-tag">Context injected for "help me email my CEO"</span>
+            <p class="fix-demo-text">"Will's CEO responds to momentum, not problems. Lead with the pipeline win. Keep it under 200 words — he skims. Recent context: reorg conversation is 47 days overdue."</p>
           </div>
         </div>
       </div>
@@ -363,57 +317,68 @@
   </div>
 </section>
 
-<!-- ── ACT THREE: THE STORY ── -->
-<section class="act-three">
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <span class="section-tag reveal">Setup</span>
+    <h2 style="font-size:clamp(28px,4vw,44px);font-weight:200;letter-spacing:-0.02em;color:var(--ink);" class="reveal">One command.<br>Zero configuration.</h2>
+    <div class="how-steps">
+      <div class="reveal">
+        <span class="how-step-n">Step 01</span>
+        <h3 class="how-step-title">Install the plugin</h3>
+        <p class="how-step-body">One command in your OpenClaw config. No API keys to manage, no dashboards, no accounts. It runs locally alongside your agent.</p>
+      </div>
+      <div class="reveal">
+        <span class="how-step-n">Step 02</span>
+        <h3 class="how-step-title">Known watches and learns</h3>
+        <p class="how-step-body">Every conversation is processed automatically after it ends. Known extracts what matters and builds a knowledge graph of who you are — not what you said.</p>
+      </div>
+      <div class="reveal">
+        <span class="how-step-n">Step 03</span>
+        <h3 class="how-step-title">Your agent finally knows you</h3>
+        <p class="how-step-body">Before every response, Known injects only the relevant context. Sessions reset. Agents get replaced. Your understanding persists.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
   <div class="story-inner">
-    <span class="story-tag reveal">Why ChatGPT can't do this</span>
+    <span class="section-tag reveal">A real story</span>
     <p class="story-text reveal">
-      Will had ChatGPT memory turned on. He also used Claude, Cursor, and OpenClaw — each one knowing a slice of him, none knowing the whole.<br><br>
-      ChatGPT knew he'd mentioned his CEO once in a conversation about promotions. That's a fact. A stored fact.<br><br>
-      What ChatGPT couldn't see: the pattern across all his tools. Every time Will got close to having that conversation, <strong>a new project appeared</strong>. A new GitHub repo. A new design doc. A new idea — always just interesting enough to justify waiting one more week.<br><br>
-      Known watched it happen four times across three months and seven tools. Not in any single conversation. Across all of them.<br><br>
-      Then, during an unrelated coding session in Cursor, his agent paused:<br><br>
-      <em>"You just started a fourth new project this month. Each time you've done this, it followed a week where you said you'd schedule the conversation with your CEO. You haven't scheduled it. The new project isn't the reason — it's the avoidance."</em><br><br>
-      Will stared at the screen for a long moment.<br><br>
-      <strong>He had the conversation the next morning.</strong>
+      Will had been using OpenClaw for a year. He'd built three products with it. His MEMORY.md had grown to 4,000 lines. He pruned it weekly. His agent kept forgetting things anyway.<br><br>
+      Then his agent noticed something Will had never seen. He was <strong>systematically avoiding the one conversation that could change his career</strong>. Every time he got close to it, a new project appeared. Four times in three months.<br><br>
+      His agent said:<br><br>
+      <em>"You've done this four times. The conversation with your CEO is the highest-leverage thing you can do this quarter. Everything else is displacement activity."</em><br><br>
+      <strong>Will had the conversation the next morning.</strong><br><br>
+      That insight didn't come from MEMORY.md. It came from watching the pattern across hundreds of sessions that flat-file memory never connected.
     </p>
   </div>
 </section>
 
-<!-- ── ACT FOUR: THE ORIGIN ── -->
-<section class="act-four">
+<!-- ORIGIN -->
+<section class="origin-section">
   <div class="bg-kanji" aria-hidden="true">知己</div>
   <div class="origin-inner">
     <span class="kanji-sm reveal">知己</span>
-    <p class="origin-text reveal">Known comes from the Chinese concept of <em style="color:var(--gold);font-style:normal">知己</em> — the person who truly knows you. Not a friend. Not a partner. Someone who understands you so deeply they can finish your thoughts.</p>
-    <p class="origin-qte reveal">"人生得一知己足矣" &mdash; In life, having one zhiji is enough.</p>
+    <p class="origin-text reveal">Known comes from 知己 — the Chinese concept of the person who truly knows you. Not a friend. Not a partner. Someone who understands you so deeply they can finish your thoughts.</p>
+    <p class="origin-qte reveal">"人生得一知己足矣" — In life, having one zhiji is enough.</p>
   </div>
 </section>
 
-<!-- ── CLOSING DECLARATION ── -->
-<!-- Jobs would end with a statement of belief, not a sales pitch -->
-<section class="act-close" id="close">
-
-  <p class="close-question reveal">
-    ChatGPT has memory. It knows what you told it.<br>
-    Known watches what you do — across every tool you use.<br>
-    Facts are not the same as understanding.<br>
-    <strong>Your AI can remember you. Or it can know you.</strong>
-  </p>
-
-  <h2 class="declaration reveal">
+<!-- CLOSE -->
+<section class="close-section" id="start">
+  <h2 class="close-headline reveal">
     Finally<br><em>known.</em>
   </h2>
-
-  <p class="close-detail reveal">Open source &nbsp;·&nbsp; Free to start &nbsp;·&nbsp; Your data stays local</p>
-
+  <p class="close-sub reveal">Open source &nbsp;·&nbsp; Free &nbsp;·&nbsp; Local &nbsp;·&nbsp; Works with OpenClaw</p>
   <div class="close-cta reveal">
     <a href="https://github.com/will-uniphore/finallyknown" class="btn-ring">View on GitHub →</a>
     <a href="https://github.com/will-uniphore/finallyknown#readme" class="btn-text">Read the docs</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <span class="fm">Known &nbsp;·&nbsp; finallyknown.ai</span>
   <div class="fl">
@@ -423,14 +388,8 @@
 </footer>
 
 <script>
-  // Scroll-reveal — every element enters with purpose
   const observer = new IntersectionObserver(
-    (entries) => entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    }),
+    (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
     { threshold: 0.12 }
   );
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
